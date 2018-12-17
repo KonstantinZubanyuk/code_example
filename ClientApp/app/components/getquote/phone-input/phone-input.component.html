@@ -1,0 +1,27 @@
+﻿<div class="form-row phone-input-module desktop mobile">
+    <div class="col phone-country-input">
+        <label class="input-label" *ngIf="withLabel" for="{{'phonecountry-' + id}}">{{ phoneCountryLabel }}</label>
+        <input class="form-control phone-input" #phoneinput
+               id="{{'phonecountry-' + id}}"
+               name="PhoneCountry"
+               [value]="countryPhoneCode" />
+    </div>
+    <div class="col phone-area-input">
+        <label class="input-label" *ngIf="withLabel" for="{{'phonearea-' + id}}">{{ phoneAreaLabel }}</label>
+        <input type="text" class="form-control" id="{{'phonearea-' + id}}" name="PhoneArea"
+               [placeholder]="phonePrefixPlaceholder"
+               [(ngModel)]="phonePrefixInput"
+               pattern="[0-9]{1,3}" maxlength="3" required>
+        <div class="invalid-feedback">{{phoneAreaInvalid}}</div>
+    </div>
+    <div class="col-6 col-sm-7">
+        <label class="input-label" *ngIf="withLabel" for="{{'phonenumber-' + id}}">{{ phoneNumberLabel }}</label>
+        <input type="text" class="form-control" id="{{'phonenumber-' + id}}" name="PhoneNumber"
+               [placeholder]="phoneNumberPlaceholder"
+               [(ngModel)]="phoneNumberInput"
+               pattern="[0-9]{1,7}" maxlength="7" required>
+        <div class="invalid-feedback">{{phoneNumberInvalid}}</div>
+    </div>
+</div>
+
+

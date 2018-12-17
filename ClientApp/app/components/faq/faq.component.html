@@ -1,0 +1,103 @@
+<div class="faq-page">
+
+    <!--Title Section-->
+    <section class="title-section">
+        <div class="width-wrapper">
+            <div class="menu-dropdown">
+                <ul class="menu">
+                    <li class="menu-item">
+                        <a class="menu-link" routerLink="/serviceBenefit" routerLinkActive="active-link">{{ 'MENU.MENU-sub-LINK1' | translate }}</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" routerLink="/plans" routerLinkActive="active-link">{{ 'MENU.MENU-sub-LINK2' | translate }}</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" routerLink="/faq/1" routerLinkActive="active-link">{{ 'MENU.MENU-sub-LINK3' | translate }}</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" routerLink="/service" routerLinkActive="active-link">{{ 'MENU.MENU-sub-LINK4' | translate }}</a>
+                    </li>
+                </ul>
+            </div>
+            <img src="img/faq.png" alt="info" role="none" />
+            <h2 class="title">
+                {{ 'Faq.faq-title' | translate }}
+            </h2>
+        </div>
+    </section>
+
+    <!--FAQ Section-->
+    <section class="faq">
+        <div class="width-wrapper">
+            <div class="links-box">
+                <ul class="faq-menu">
+                    <li class="faq-menu-item" *ngFor="let faqCategory of faqCategories" routerLinkActive="active">
+                        <a class="faq-menu-link" [routerLink]="['/faq', faqCategory.id]">
+                            <p>{{faqCategory.name}}</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="question-answer-box">
+                <ul class="question-answer">
+                    <li *ngFor="let faq of faqs" class="question-answer-item">
+                        <h3 class="question title">
+                            {{faq.question}}
+                        </h3>
+                        <p class="answer sub-title">
+                            {{faq.answer}}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!--FAQ Mobile Section-->
+    <section class="faq-mobile">
+        <div class="faq-accordion" id="accordion">
+            <div class="faq-card" *ngFor="let faqCategory of faqCategories; let categoryIndex = index">
+                <div class="card-header" id="{{'heading' + categoryIndex}}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" [class.to-collapse]="id !== (categoryIndex + 1)" data-toggle="collapse" 
+                                attr.data-target="{{'#collapse' + categoryIndex}}" aria-expanded="false" attr.aria-controls="{{'collapse' + categoryIndex}}" 
+                                [routerLink]="['/faq', faqCategory.id]" (click)="onClickCard()">
+                            {{faqCategory.name}}
+                        </button>
+                    </h5>
+                </div>
+                <div id="{{'collapse' + categoryIndex}}" class="collapse" [class.to-collapse]="id !== (categoryIndex + 1)" 
+                     attr.aria-labelledby="{{'heading' + categoryIndex}}" attr.data-parent="{{'#heading' + categoryIndex}}">
+                    <div class="card-body" *ngFor="let faq of faqs">
+                        <div *ngIf="isExistFaq">
+                            <h3 class="title">
+                                {{faq.question}}
+                            </h3>
+                            <p class="sub-title">
+                                {{faq.answer}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Join Us Section-->
+    <section class="join">
+        <div class="width-wrapper">
+            <h2 class="home-title">
+                {{ 'HOME.JOIN-US-TITLE' | translate }}
+            </h2>
+            <ul class="contacts">
+                <li class="contacts-item" data-href="#quote" routerLink="/home" role="button">
+                    <a class="contacts-link">{{ 'MENU.MENU-LINK6' | translate }}</a>
+                </li>
+                <li class="contacts-item contacts-item--gray" role="button">
+                    <a class="contacts-link" href="tel:97298920950">972-9-8920950</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+</div>

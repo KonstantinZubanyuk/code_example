@@ -1,0 +1,150 @@
+﻿.phone-input-module {
+    @media only screen and (max-width: 435px) {
+        .phone-country-input {
+            max-width: 85px;
+        }
+
+        .phone-area-input {
+            max-width: 85px;
+        }
+    }
+
+    .intl-tel-input {
+        width: 100%;
+
+        &.separate-dial-code {
+            height: 48px;
+
+            .flag-container {
+                width: 97px;
+                height: 48px;
+
+                @media only screen and (max-width: 768px) {
+                    width: 100%;
+                }
+
+                .selected-flag {
+                    width: 93px;
+                    background-color: #ffffff;
+
+                    @media only screen and (max-width: 768px) {
+                        width: 100%;
+                        padding-left: 3px;
+                    }
+                }
+            }
+        }
+
+        .flag-container {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+
+            @media only screen and (max-width: 768px) {
+                border-radius: 2.4px;
+                border: solid .5px #868686;
+            }
+        }
+
+        input.phone-input {
+            visibility: hidden;
+        }
+    }
+
+    .form-control {
+        height: 48px;
+    }
+
+    .intl-tel-input {
+        .selected-flag {
+            .iti-flag {
+                @media only screen and (max-width: 768px) {
+                    display: none;
+                }
+            }
+        }
+
+        &.separate-dial-code {
+            .selected-dial-code {
+                @media only screen and (max-width: 768px) {
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+}
+
+/*RTL Styles*/
+body[dir="rtl"] {
+    .phone-input-module {
+        .intl-tel-input {
+            .flag-container {
+                .selected-flag {
+                    padding-right: 17px;
+                    padding-left: 0;
+
+                    @media only screen and (max-width: 768px) {
+                        padding-right: 3px;
+                    }
+
+                    .selected-dial-code {
+                        padding-right: 28px;
+                        padding-left: 0;
+                        text-align: right;
+
+                        @media only screen and (max-width: 768px) {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+                .country-list {
+                    direction: ltr;
+
+                    .country {
+                        direction: rtl;
+                        text-align: right;
+                        display: flex;
+                        align-items: center;
+
+                        .flag-box {
+                            margin-left: 6px;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        .intl-tel-input {
+            .selected-flag {
+                .iti-arrow {
+                    @media only screen and (max-width: 768px) {
+                        right: 45px;
+                    }
+                }
+            }
+
+            .country-list {
+                .country-name {
+                    margin-right: 0;
+                    margin-left: 6px;
+                    direction: ltr;
+                }
+
+                .country {
+                    .dial-code {
+                        direction: ltr;
+                    }
+                }
+            }
+        }
+
+        .col-3 {
+            text-align: right;
+        }
+
+        .col-6 {
+            text-align: right;
+        }
+    }
+}

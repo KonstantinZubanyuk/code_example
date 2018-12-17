@@ -1,0 +1,1 @@
+﻿export declare function initAutocomplete(inputId: string,  values: string[]);

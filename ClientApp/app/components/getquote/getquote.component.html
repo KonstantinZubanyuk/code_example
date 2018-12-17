@@ -1,0 +1,173 @@
+﻿<form #getQuoteFormRef="ngForm" class="country-from" autocomplete="off">
+
+    <div *ngIf="(getQuoteStep == GetQuoteStep.Destination)">
+        <!-- Destination step-->
+        <h4 class="country-title">
+            {{ 'HOME.quote-form-title' | translate }}
+        </h4>
+        <input [(ngModel)]="getQuoteForm.destination" id="destination-input" class="country-input autocomplete" type="text" name="destination" placeholder="{{ 'HOME.placeholder1' | translate }}" />
+        <div class="btn-box">
+            <button class="form-btn" [class.disabled]="getQuoteForm.destination == ''" [disabled]="getQuoteForm.destination == ''" (click)="moveToStep(GetQuoteStep.Origin)" role="button"><div class="submit-glyph"></div></button>
+        </div>
+
+        <p class="mobile-sub-title">
+        </p>
+    </div>
+
+    <div *ngIf="(getQuoteStep == GetQuoteStep.Origin)">
+        <!-- Origin step-->
+        <h4 class="country-title">
+            {{'HOME.nationality-title' | translate}}
+        </h4>
+        <input [(ngModel)]="getQuoteForm.origin" id="origin-input" class="country-input autocomplete" type="text" name="origin" placeholder="{{'HOME.nationality-placeholder' | translate}}" />
+        <div class="btn-box">
+            <button class="form-btn" [class.disabled]="getQuoteForm.origin == ''" [disabled]="getQuoteForm.origin == ''" (click)="moveToStep(GetQuoteStep.Passengers)" role="button"><div class="submit-glyph"></div></button>
+        </div>
+
+        <p class="mobile-sub-title">
+        </p>
+    </div>
+
+    <div *ngIf="(getQuoteStep == GetQuoteStep.Passengers)">
+        <!-- Passengers checking step-->
+        <h4 class="country-title">
+            {{'HOME.cover-title' | translate}}
+        </h4>
+
+        <label class="passenger-checkbox-container" role="checkbox">
+            {{'HOME.cover-me' | translate}}
+            <input type="checkbox" name="me-checkbox" [(ngModel)]="meChecked" (change)="removePassengerElementByType(PassengerType.Me)" />
+            <span class="checkmark"></span>
+        </label>
+        <label class="passenger-checkbox-container">
+            {{'HOME.cover-partner' | translate}}
+            <input type="checkbox" name="partner-checkbox" [(ngModel)]="partnerChecked" (change)="removePassengerElementByType(PassengerType.Partner)" />
+            <span class="checkmark"></span>
+        </label>
+        <label class="passenger-checkbox-container">
+            {{'HOME.cover-kids' | translate}}
+            <input type="checkbox" name="kids-checkbox" [(ngModel)]="kidsChecked" (change)="removePassengerElementByType(PassengerType.Kid)" />
+            <span class="checkmark"></span>
+        </label>
+
+        <div class="btn-box btn-box-passengers">
+            <button class="form-btn" [class.disabled]="passengersAreNotChecked()" [disabled]="passengersAreNotChecked()" (click)="moveToStep(GetQuoteStep.PassengersDetails)" role="button"><div class="submit-glyph"></div></button>
+        </div>
+    </div>
+
+    <div *ngIf="(getQuoteStep == GetQuoteStep.PassengersDetails)">
+        <!-- Passengers details step-->
+        <h4 class="country-title">
+            {{'HOME.details-title' | translate}}
+        </h4>
+        
+        <div *ngFor="let passenger of getQuoteForm.passengers; let i = index;">
+            <div  class="row passenger-item" [class.last-item]="i === getQuoteForm.passengers.length - 1">
+                <div class="col-sm-7 passenger-birthdate">
+                    <datepicker-input *ngIf="passenger.type !== undefined" 
+                                      [name]="'passenger-birthdate-' + i" 
+                                      [placeholder]="getPassengerPlaceholder(passenger.type)" 
+                                      [value]="getValueWithPrefix(passenger)"
+                                      (onInput)="passenger.birthDate = $event">
+                    </datepicker-input>
+                    <select class="form-control select-passenger-type" *ngIf="passenger.type === undefined" name="passenger-type-{{i}}" [(ngModel)]="passenger.type">
+                        <option [ngValue]="undefined" hidden selected>Who would you like cover?</option>
+                        <option *ngIf="!getQuoteForm.isPassengerTypeExists(PassengerType.Me)" [ngValue]="PassengerType.Me">{{'HOME.cover-me' | translate}}</option>
+                        <option *ngIf="!getQuoteForm.isPassengerTypeExists(PassengerType.Partner)" [ngValue]="PassengerType.Partner">{{'HOME.cover-partner' | translate}}</option>
+                        <option [ngValue]="PassengerType.Kid">{{'HOME.cover-kids' | translate}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-4 passenger-gender">
+                    <div class="btn-group btn-group-toggle">
+                        <label class="btn btn-light btn-male" [class.active]="passenger.gender === Gender.Male">
+                            <input type="radio" class="form-check-input" name="passenger-gender-{{i}}" [value]="Gender.Male" [(ngModel)]="passenger.gender" />
+                            <span>{{'HOME.details-male' | translate}}</span>
+                        </label>
+                        <label class="btn btn-light btn-female" [class.active]="passenger.gender === Gender.Female">
+                            <input type="radio" class="form-check-input" name="passenger-gender-{{i}}" [value]="Gender.Female" [(ngModel)]="passenger.gender" />
+                            <span>{{'HOME.details-female' | translate}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-1 passenger-add-remove">
+                    <div class="btn-box-add" [class.hidden]="getQuoteForm.passengers.length < 2">
+                        <button class="form-btn" (click)="removePassengerElement(i)" role="button">
+                            <div class="minus-glyph"></div>
+                        </button>
+                    </div>
+                    <div class="btn-box-add" [class.hidden]="i !== getQuoteForm.passengers.length - 1">
+                        <button class="form-btn" (click)="addPassengerElement()" role="button">
+                            <div class="add-glyph"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-box btn-box-passengers-details">
+            <button class="form-btn" [class.disabled]="passengersDetailsNotFinished()" [disabled]="passengersDetailsNotFinished()" (click)="moveToStep(GetQuoteStep.ContactInfo)" role="button">
+                <div class="submit-glyph"></div>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="(getQuoteStep == GetQuoteStep.ContactInfo)">
+        <!-- Contact info step-->
+        <h4 class="country-title">
+            {{'HOME.contacts-title' | translate}}
+        </h4>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <input type="email" class="form-control email-input" placeholder="{{'HOME.contacts-email' | translate}}" name="contact-email" [(ngModel)]="getQuoteForm.email" [email]="true">
+                </div>
+            </div>
+            <div class="col-sm-12 phone-input-container">
+                <phone-input [withLabel]="false" 
+                             [phonePrefixPlaceholder]="'HOME.contacts-prefix' | translate" 
+                             [phoneNumberPlaceholder]="'HOME.contacts-number' | translate" 
+                             [countryPhoneCodeInput]="getQuoteForm.phoneCountry"
+                             [phonePrefix]="getQuoteForm.phoneArea"
+                             [phoneNumber]="getQuoteForm.phoneNumber"
+                             (onInput)="onPhoneInput($event)" ngDefaultControl>
+                </phone-input>
+            </div>
+            <div class="col-sm-12">
+                <label class="approve-checkbox-container">
+                    {{ 'Form.chek1' | translate }}
+                    <input type="checkbox" name="contact-approve" [(ngModel)]="getQuoteForm.approveUseInformation" required />
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="approve-checkbox-container">
+                    {{ 'Form.chek2' | translate }}
+                    <input type="checkbox" name="contact-receive-marketing" [(ngModel)]="getQuoteForm.receiveMarketingMaterial" />
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-sm-12 text-descriptions">
+                {{'HOME.contacts-agreement' | translate}}
+            </div>
+            <div class="col-sm-12">
+                <div class="btn-box btn-box-get-quote">
+                    <button type="button" class="btn" role="button"
+                            [disabled]="!getQuoteFormRef.valid || !getQuoteForm.phoneNumber.length || isSubmittedGetQuote"
+                            [class.disabled]="!getQuoteFormRef.valid || !getQuoteForm.phoneNumber.length || isSubmittedGetQuote"
+                            (click)="getQuote()">
+                        <div *ngIf="!isSubmittedGetQuote">{{'HOME.get-a-quote' | translate}}</div>
+                        <div class="spinner" *ngIf="isSubmittedGetQuote">
+                            <div class="spinner-wrapper">
+                                <div class="rotator">
+                                    <div class="inner-spin"></div>
+                                    <div class="inner-spin"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
